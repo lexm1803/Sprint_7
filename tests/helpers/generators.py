@@ -14,7 +14,7 @@ def generate_courier_data():
         'firstName': generate_random_string(8)
     }
 
-def generate_order_data(courier_id):
+def generate_order_data(courier_id=None):
     tomorrow = (datetime.now() + timedelta(days=1)).strftime('%Y-%m-%d')
     return {
         'firstName': generate_random_string(6).capitalize(), 

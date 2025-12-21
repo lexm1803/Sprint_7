@@ -1,11 +1,16 @@
 import pytest
 from src.api_clients.courier_client import CourierClient
+from src.api_clients.order_client import OrderClient
 from tests.helpers.generators import generate_courier_data
 
 
 @pytest.fixture
 def courier_client():
     return CourierClient()
+
+@pytest.fixture
+def order_client():
+    return OrderClient()
 
 @pytest.fixture
 def registred_courier(courier_client):
