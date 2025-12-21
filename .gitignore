@@ -3,4 +3,3 @@ __pycache__/
 .env
 venv/
 .pytest_cache/
-del_api_cur.md
