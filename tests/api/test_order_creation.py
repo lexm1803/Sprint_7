@@ -18,7 +18,23 @@ class TestOrderCreation:
     ])
     @allure.title('Создание заказа с цветами {description}')
     @allure.description('Проверка создания заказа с разными вариантами поля "color"')
-    def test_order_creation_with_colors(self, order_client: OrderClient, colors, description):
+    def test_order_creation_with_colors(self, create_orders, colors, description):
+        order_data = generate_order_data()
+        order_data['color'] = colors
+
+        with allure.step(f'Отправка POST с цветами {colors}'):
+            response = create_orders(order_data)
+
+        with allure.step('Проверка статус-кода 201'):
+            assert_status_code(response, 201)
+
+        with allure.step('Проверка наличия трек-номера заказа'):
+            assert_response_has_key(response, 'track')
+            track = response.json()['track']
+            assert isinstance(track, int), f'Номер заказа должен быть числом, получен {type(track)}'
+            assert track > 0, f'Номер заказа должен быть положительным, получен {track}'
+
+"""     def test_order_creation_with_colors(self, order_client: OrderClient, colors, description):
         order_data = generate_order_data()
         order_data['color'] = colors
 
@@ -32,4 +48,4 @@ class TestOrderCreation:
             assert_response_has_key(response, 'track')
             track = response.json()['track']
             assert isinstance(track, int), f'Номер заказа должен быть числом, получен {type(track)}'
-            assert track > 0, f'Номер заказа должен быть положительным, получен {track}'
+            assert track > 0, f'Номер заказа должен быть положительным, получен {track}' """

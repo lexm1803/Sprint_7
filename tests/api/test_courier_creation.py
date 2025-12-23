@@ -12,11 +12,11 @@ class TestCourierCreation:
 
     @allure.title('Успешная регистрация курьера')
     @allure.description('Проверка успешного создания курьера при передаче данных для регистрации')
-    def test_register_success(self, courier_client: CourierClient):
+    def test_register_success(self, registr_courier):
         data = generate_courier_data()
 
         with allure.step(f'Отправка POST на URL /courier с данными: {data}'):
-            response = courier_client.register(
+            response = registr_courier(
                 login=data['login'],
                 password=data['password'],
                 firstName=data['firstName']
@@ -31,11 +31,11 @@ class TestCourierCreation:
     
     @allure.title('Ошибка при регистрации существующего курьера')
     @allure.description('Проверка ошибки 409 при попытке регистрации курьера с существующими в базе данными')
-    def test_register_duplicate_fails(self, courier_client: CourierClient):
+    def test_register_duplicate_fails(self, registr_courier):
         data = generate_courier_data()
 
         with allure.step(f'Регистрация курьера: логин - {data['login']}'):
-            registration_1 = courier_client.register(
+            registration_1 = registr_courier(
                 login=data['login'],
                 password=data['password'],
                 firstName=data['firstName']
@@ -43,7 +43,7 @@ class TestCourierCreation:
             assert_status_code(registration_1, 201)
 
         with allure.step(f'Повторная регистрация курьера: логин - {data['login']}'):
-            registration_2 = courier_client.register(
+            registration_2 = registr_courier(
                 login=data['login'],
                 password=data['password'],
                 firstName=data['firstName']

@@ -22,3 +22,7 @@ class OrderClient(BaseClient):
     def accept(self, order_id, courier_id):
         return self.put(f'/orders/accept/{order_id}', params={'courierId': courier_id})
     
+    def cancel_order(self, track_id):
+        payload = {'track': track_id}
+        return self.put('/orders/cancel', json=payload)
+    
